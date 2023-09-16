@@ -12,6 +12,8 @@ export const AppState = reactive({
   // /** @type {import('./models/Post.js').Post}*/
   posts: [],
 
+  /** @type {Post} */
+  activePost: null,
   // page nav section
 
   /** @type {Number} */

@@ -29,6 +29,7 @@ import { Post } from '../models/Post.js';
 export default {
     setup() {
         const postData = ref({})
+        const router = useRouter()
         // const router = useRouter()
         return {
             postData,
@@ -39,7 +40,8 @@ export default {
                     logger.log('new post up?', postData.value)
                     const newPost = await postsService.createPost(postData.value)
                     Pop.toast('ready to go viral!')
-                    // router.push({ name: 'Home', params: { postId: newPost.id } })
+                    router.push({ name: 'Home' })
+                    postData.value = {}
                 } catch (error) {
                     Pop.error(error)
                 }
@@ -82,3 +84,5 @@ button:hover {
 <!-- https://giphy.com/embed/jTlFgjNiF2oaxoBm92 -->
 <!-- https://giphy.com/gifs/MayansFX-arcade-games-skeeball-jTlFgjNiF2oaxoBm92 -->
 <!-- https://giphy.com/gifs/MayansFX-arcade-games-skeeball-jTlFgjNiF2oaxoBm92 -->
+<!-- not needed in router push? , params: { postId: newPost.id }  -->
+<!--                                ⬆️ removing this worked -->

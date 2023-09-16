@@ -35,6 +35,19 @@ class PostsService {
         AppState.posts.push(newPost)
         // return newPost
     }
+
+    async getPostById(postId) {
+        AppState.activePost = null
+        const res = await api.get(`api/cars/${postId}`)
+        logger.log('active post', res.data)
+        AppState.activePost = new Post(res.data)
+
+    }
+
+    setActivePost(postId) {
+        const post = AppState.posts.find(post => post.id == postId)
+        AppState.activePost = post
+    }
 }
 
 export const postsService = new PostsService

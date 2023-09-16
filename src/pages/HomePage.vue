@@ -14,13 +14,22 @@
 
 
     <!-- move to Create Post -->
-    <CreatePost />
+    <div class="row justify-content-center">
+      <div class="text-center">
+
+        <router-link :to="{ name: 'Create Post' }">
+          <img src="../assets/img/Network-logo-button.png" id="createPost" class="rounded mt-2" alt="">
+        </router-link>
+
+      </div>
+    </div>
+
     <section class="row justify-content-between my-2">
       <button @click="changePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3">
-        <i class="mdi mdi-arrow-left"></i> older
+        <i class="mdi mdi-arrow-left"></i> Tony
       </button>
       <button @click="changePage(pageNumber + 1)" :disabled="pageNumber >= totalPages" class="col-3">
-        newer <i class="mdi mdi-arrow-right"></i>
+        Passé <i class="mdi mdi-arrow-right"></i>
       </button>
 
     </section>
@@ -53,11 +62,14 @@ import { postsService } from '../services/PostsService.js';
 import { AppState } from '../AppState.js'
 import { logger } from '../utils/Logger.js';
 import { Post } from '../models/Post.js';
+import { useRoute, useRouter } from 'vue-router';
+
 // import PostCard from '../components/PostCard.vue.js';
 // import { PostCard } from '../components/PostCard.vue';
 // ⬆️ causes errors
 export default {
   setup() {
+    const route = useRoute()
     // onMounted to draw
     onMounted(() => {
       getPosts();
@@ -72,6 +84,8 @@ export default {
         Pop.error(error);
       }
     }
+
+
     return {
       getPosts,
 
@@ -87,6 +101,7 @@ export default {
       posts: computed(() => AppState.posts),
       pageNumber: computed(() => AppState.pageNumber),
       totalPages: computed(() => AppState.totalPages),
+      activePost: computed(() => AppState.activePost),
     };
   },
   // components: { PostCard }
@@ -114,6 +129,16 @@ export default {
       object-position: center;
     }
   }
+}
+
+#createPost {
+  height: 10vh;
+}
+
+#createPost:hover {
+  transform: scale(1.1);
+  transition: .5s ease;
+  box-shadow: 0 0 10px 5px whitesmoke;
 }
 
 button {

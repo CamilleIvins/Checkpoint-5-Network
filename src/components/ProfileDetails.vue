@@ -1,7 +1,14 @@
 <template>
-    <div class="component">
+    <div class="component row">
+        <div class="col-md-6 col-12">
 
-
+            <div>
+                {{ Post.creator.picture }}
+            </div>
+            <p>
+                {{ post.creator.name }}
+            </p>
+        </div>
     </div>
 </template>
 
