@@ -1,5 +1,6 @@
 <template>
     <div class="component">
+        <PostForm />
 
 
     </div>

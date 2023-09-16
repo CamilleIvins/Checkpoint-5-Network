@@ -1,6 +1,6 @@
 <template>
   <!-- form to move to a template elsewhere -->
-  <form class="component row">
+  <!-- <form class="component row">
     <div class="col-12">
       <input type="text" class="form-control" placeholder="Title" maxlength="75">
     </div>
@@ -9,34 +9,41 @@
     </div>
     <textarea name="postText" id="postText" class="form-control" placeholder="Type away"></textarea>
     <button class="btn col-3 mt-3">Post!</button>
-  </form>
+  </form> -->
+  <div class="container">
 
-  <section class="container">
-    <!-- <PostForm/> -->
-    <div class="row justify-content-between mt-2">
-      <button class="col-3">
+
+    <!-- move to Create Post -->
+    <CreatePost />
+    <section class="row justify-content-between my-2">
+      <button @click="changePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3">
         <i class="mdi mdi-arrow-left"></i> older
       </button>
-      <button class="col-3">
+      <button @click="changePage(pageNumber + 1)" :disabled="pageNumber >= totalPages" class="col-3">
         newer <i class="mdi mdi-arrow-right"></i>
       </button>
 
-    </div>
-    <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+    </section>
+
+
+    <section class="row justify-content-around">
+      <!-- <div class="home align-items-center justify-content-center"> -->
       <!-- <div class="home-card p-5 bg-white rounded elevation-3">
         <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
           class="rounded-circle"> -->
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Posts really need to start showing up here
-        <!--          ⬇️ this is the wrong color, leave uncommented for now -->
-        <div v-for="post in posts" :key="post.id" class="col-md-8 col-12">
-          <!-- <PostCard :post="post" /> -->
-        </div>
-      </h1>
+      <!-- <div class="my-5 text-white p-3 rounded text-center"> -->
+      <!-- Posts really need to start showing up here -->
+      <!--          ⬇️ this is the wrong color, leave uncommented for now -->
+      <div v-for="post in posts" :key="post.id" class="col-12 g-1">
+        <PostCard :post="post" />
+        <!-- {{ post.creator.class }} -->
+      </div>
       <!-- </div> -->
-    </div>
+      <!-- </div> -->
+      <!-- </div> -->
 
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -67,7 +74,19 @@ export default {
     }
     return {
       getPosts,
-      posts: computed(() => AppState.posts)
+
+      // change pages function,
+      async changePage(number) {
+        try {
+          await postsService.changePage(`api/posts?page=${number}`)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
+      posts: computed(() => AppState.posts),
+      pageNumber: computed(() => AppState.pageNumber),
+      totalPages: computed(() => AppState.totalPages),
     };
   },
   // components: { PostCard }
@@ -81,6 +100,7 @@ export default {
   place-content: center;
   text-align: center;
   user-select: none;
+  // overflow-y: hidden;
 
 
   .home-card {
