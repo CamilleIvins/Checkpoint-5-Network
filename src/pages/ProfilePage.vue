@@ -2,16 +2,60 @@
     <!-- look at Artsy from Seniors' class -->
     <!-- <div v-if="activeProfile" class="component row justify-content-center"> -->
     <!-- <div v-for="profile in profiles" :key="profile.id" class="col-md-6 col-12 g-1"> -->
-    <div v-if="profile">
+    <div v-if="profile" class="container-fluid">
+        <div class="row justify-content-center">
 
-        get from the profile details page
-        <div>
-            {{ profile.name }}
+            <img class="profile-pic px-0" :src="profile.picture" alt="">
         </div>
-        <p>
-            {{ profile.id }}
-        </p>
+        <div class="row">
+            <div class="col-4 profile-card elevation-2">
+                <div class="p-2">
+
+                    <h1>{{ profile.name }}</h1>
+                    <img src="../assets/img/Network-logo-button.png" id="bioLinks" class="rounded my-2 elevation-2">
+
+                    <div class="row">
+                        <a class="col-md-2 col-12" v-if="profile.linkedin" :href="profile.linkedin"><i
+                                class="mdi mdi-linkedin fs-1"></i>
+                            <div class="text-black">Let's connect!</div>
+                        </a>
+                        <a class="col-md-2 col-12" v-if="profile.github" :href="profile.github"><i
+                                class="mdi mdi-github fs-1"></i>
+                            <div class="text-black">See my projects!</div>
+                        </a>
+                        <a class="col-md-2 col-12" v-if="profile.email" :href="profile.email"><i
+                                class="mdi mdi-email fs-1"></i>
+                            <div class="text-black">We should chat!</div>
+                        </a>
+                        <a class="col-md-2 col-12" v-if="profile.resume" :href="profile.resume"><i
+                                class="mdi mdi-file-account fs-1"></i>
+                            <div class="text-black">My highlight reel!</div>
+                        </a>
+                        <a class="col-md-2 col-12" v-if="profile.class" :href="profile.class"><i
+                                class="mdi mdi-account-group fs-1"></i>
+                            <div class="text-black">{{ profile.class }}</div>
+                        </a>
+                        <a class="col-md-2 col-12">
+                            <i v-if="profile.graduated == true" :href="profile.graduated" class="mdi mdi-school fs-1"></i>
+                            <i v-else :href="profile.graduated" class="mdi mdi-school-outline fs-1"></i>
+                        </a>
+                        <div v-if="profile.graduated == true" :href="profile.graduated" class="text-black">Graduated</div>
+                        <div v-else :href="profile.graduated" class="text-black">Finishing classes</div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-8">
+                <p>{{ profile.bio }}</p>
+
+            </div>
+        </div>
+        <!-- <div class="col-8" v-for="post in posts">
+
+        </div> -->
     </div>
+
     draw all the posts from this profile below
     <!-- </div> -->
     <!-- </div> -->
@@ -46,8 +90,19 @@ export default {
                 Pop.error(error.message)
             }
         }
+
+        async function getPostByProfile() {
+            try {
+                const profileId = route.params.profileId
+                await postsService.getPostByProfile(profileId)
+            } catch (error) {
+                Pop.error('Does this person even post?', error)
+            }
+        }
+
         onMounted(() => {
             getActiveProfile()
+            getPostByProfile()
         })
         return {
             profile: computed(() => AppState.activeProfile)
@@ -113,4 +168,28 @@ export default {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.profile-pic {
+    height: 20vh;
+    width: 20vh;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.profile-card {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    backdrop-filter: blur(50px) opacity(0.95);
+    // border: 5px black;
+    // box-shadow: 0 1px 15px whitesmoke;
+}
+
+#bioLinks {
+    height: 10vh;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+</style>
