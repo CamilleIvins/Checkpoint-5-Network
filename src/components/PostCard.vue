@@ -4,7 +4,7 @@
             <div class="p-2 post-card w-100 rounded elevation-5">
 
                 <div class="d-flex justify-content-between">
-                    <router-link :to="{ name: 'Profile', params: { profileId: profile.id } }">
+                    <router-link :to="{ name: 'Profile', params: { profileId: post.creator.id } }">
                         <!-- , params: { profileName: profile.name }  -->
                         <img class="profile-pic" :src="post.creator.picture" @click="setActiveProfile">
                     </router-link>

@@ -17,13 +17,13 @@ export const AppState = reactive({
   // page nav section
 
   // profile section
-  /** @type {import('./models/Profile.js')Profile[]} */
+  // /** @type {import('./models/Profile.js')Profile[]} */
   // /** @type {import('./models/Profile.js').Profile}*/
   profiles: [],
 
-  /** @type {Profile} */
+  // /** @type {Profile} */
   // should this be null?
-  activeProfile: {},
+  activeProfile: null,
   // page nav section
 
   /** @type {Number} */

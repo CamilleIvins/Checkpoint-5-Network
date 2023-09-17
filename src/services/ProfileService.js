@@ -18,7 +18,10 @@ class ProfilesService {
     //     AppState.activeProfile = res.data
     // }
     async getActiveProfile(profileId) {
-        const profile = AppState.posts.find(post => post.creator.id == profileId)
+        // const profile = AppState.posts.find(post => post.creator.id == profileId)
+        const res = await api.get(`api/profiles/${profileId}`)
+        logger.log("profile, c'mere", res.data)
+        const profile = new Profile(res.data)
         AppState.activeProfile = profile
         logger.log('profile id return?', profileId)
     }
