@@ -2,6 +2,7 @@ import { AppState } from "../AppState.js"
 import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
 import { Profile } from "../models/Profile.js"
+import { Post } from "../models/Post.js"
 
 class ProfilesService {
 
@@ -24,6 +25,24 @@ class ProfilesService {
         const profile = new Profile(res.data)
         AppState.activeProfile = profile
         logger.log('profile id return?', profileId)
+    }
+
+    async getPostsByProfile(profileId) {
+        // dude, remember to watch for the   ⬇️ absent 's
+        const res = await api.get(`api/profiles/${profileId}/posts`)
+        logger.log('profile posts', res.data)
+        const profilePosts = res.data.posts.map(proPosts => new Post(proPosts))
+        AppState.posts = profilePosts
+
+    }
+
+    async searchProfiles(searchTerm) {
+        const res = await api.get(`api/profiles?query=${searchTerm}`)
+        logger.log('profile query res.data', res.data)
+        // double-check plurals here
+        AppState.profiles = res.data.profiles.map(profile => new Profile(profile))
+        AppState.searchTerm = searchTerm
+        AppState.totalPages = res.data.totalPages
     }
 
 }

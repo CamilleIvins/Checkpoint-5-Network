@@ -31,4 +31,9 @@ export const AppState = reactive({
   /** @type{Number} */
   totalPages: 13,
 
+  sellers: [],
+
+  /** @type{String} */
+  searchTerm: ""
+
 })

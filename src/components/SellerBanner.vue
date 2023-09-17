@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-0">
         <div class="card my-2 mt-3">
-            <img :src="seller.tall" alt="">
+            <img :src="seller.banner" alt="">
         </div>
 
     </div>

@@ -66,6 +66,13 @@ class PostsService {
         )
     }
 
+    async searchPosts(searchTerm) {
+        const res = await api.get(`api/posts?query=${searchTerm}`)
+        logger.log('posts query res.data', res.data)
+        AppState.posts = res.data.map(post => new Post(post))
+        AppState.searchTerm = searchTerm
+        AppState.totalPages = res.data.totalPages
+    }
 
     setActivePost(postId) {
         const post = AppState.posts.find(post => post.id == postId)
@@ -77,17 +84,7 @@ class PostsService {
         AppState.setActiveProfile = profile
         logger.log('profile id?', profileId)
     }
-    // async is in profile service as well
-    async getActiveProfile(profileId) {
-        AppState.activeProfile = null
-        const profile = AppState.profiles.find(profile => profile.id == profileId)
-        logger.log('trying to reach profile', AppState.profiles)
-        // const res = await api.get(`api/profiles/${profileId}`)
-        const res = await api.get(`api/profiles/` + profileId)
-        logger.log('trying to reach profile', res.data)
-        // AppState.activeProfile = new Profile(res.data)
-        AppState.activeProfile = profile
-    }
+
 }
 
 export const postsService = new PostsService

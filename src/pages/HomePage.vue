@@ -43,15 +43,26 @@
           class="rounded-circle"> -->
       <!-- <div class="my-5 text-white p-3 rounded text-center"> -->
       <!-- Posts really need to start showing up here -->
-      <!--          ⬇️ this is the wrong color, leave uncommented for now -->
-      <div v-for="post in posts" :key="post.id" class=" g-1">
-        <PostCard :post="post" />
-        <!-- {{ post.creator.class }} -->
+      <div class="col-md-8 col-12 g-1 mx-0">
+        <!--          ⬇️ this is the wrong color, leave uncommented for now -->
+        <div v-for="post in posts" :key="post.id">
+          <PostCard :post="post" />
+          <!-- {{ post.creator.class }} -->
+        </div>
       </div>
+
       <!-- </div> -->
       <!-- </div> -->
-      <!-- </div> -->
-      <!-- PLACE ADS HERE, NAMED 'SELLERS' -->
+      <div class="col-3 mx-0">
+
+        <!-- PLACE ADS HERE, NAMED 'SELLERS' -->
+        <span v-for="seller in sellers" :key="seller.title">
+          <!-- NO 'S' HERE⬇️ -->
+          <!-- <img :src="seller.tall" alt=""> -->
+          <SellerCard :seller="seller" />
+          <!-- {{ seller.banner }} this shows up, so draw can work -->
+        </span>
+      </div>
     </section>
 
     <section class="row justify-content-between my-2">
@@ -70,6 +81,7 @@
 import { computed, onMounted } from 'vue';
 import Pop from '../utils/Pop.js';
 import { postsService } from '../services/PostsService.js';
+import { sellersService } from '../services/SellersService.js';
 import { AppState } from '../AppState.js'
 import { logger } from '../utils/Logger.js';
 import { Post } from '../models/Post.js';
@@ -91,6 +103,7 @@ export default {
     onMounted(() => {
 
       getPosts();
+      getSellers();
     });
     // 'async function' under setup, 'async' within return block
     async function getPosts() {
@@ -102,10 +115,20 @@ export default {
         Pop.error(error);
       }
     }
+    async function getSellers() {
+      try {
+        await sellersService.getSellers();
+        logger.log('are sellers coming back?');
+      }
+      catch (error) {
+        Pop.error(error);
+      }
+    }
 
 
     return {
       getPosts,
+      getSellers,
 
       // setActiveProfile() {
       //   profilesService.setActiveProfile(props.profile.name)
@@ -126,6 +149,7 @@ export default {
       pageNumber: computed(() => AppState.pageNumber),
       totalPages: computed(() => AppState.totalPages),
       activePost: computed(() => AppState.activePost),
+      sellers: computed(() => AppState.sellers)
     };
   },
   // components: { PostCard }

@@ -1,5 +1,5 @@
 <template>
-    <div class="container col-md-7 col-10  my-2">
+    <div class="container mx-0 my-2">
         <div class="row">
             <div class="p-2 post-card w-100 rounded elevation-5">
 

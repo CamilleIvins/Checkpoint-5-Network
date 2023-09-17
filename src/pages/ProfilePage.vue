@@ -8,46 +8,58 @@
             <img class="profile-pic px-0" :src="profile.picture" alt="">
         </div>
         <div class="row">
-            <div class="col-4 profile-card elevation-2">
-                <div class="p-2">
+            <div class="col-4 px-0">
+                <div class="p-2 elevation-2 profile-card sticky-top">
 
                     <h1>{{ profile.name }}</h1>
-                    <img src="../assets/img/Network-logo-button.png" id="bioLinks" class="rounded my-2 elevation-2">
+                    <img src="../assets/img/Network-logo-button.png" id="bioLinks" class="rounded my-2 ">
 
                     <div class="row">
-                        <a class="col-md-2 col-12" v-if="profile.linkedin" :href="profile.linkedin"><i
+                        <a class="col-md-4 col-12" v-if="profile.linkedin" :href="profile.linkedin"><i
                                 class="mdi mdi-linkedin fs-1"></i>
                             <div class="text-black">Let's connect!</div>
                         </a>
-                        <a class="col-md-2 col-12" v-if="profile.github" :href="profile.github"><i
+                        <a class="col-md-4 col-12" v-if="profile.github" :href="profile.github"><i
                                 class="mdi mdi-github fs-1"></i>
                             <div class="text-black">See my projects!</div>
                         </a>
-                        <a class="col-md-2 col-12" v-if="profile.email" :href="profile.email"><i
+                        <a class="col-md-4 col-12" v-if="profile.email" :href="profile.email"><i
                                 class="mdi mdi-email fs-1"></i>
                             <div class="text-black">We should chat!</div>
                         </a>
-                        <a class="col-md-2 col-12" v-if="profile.resume" :href="profile.resume"><i
+                        <a class="col-md-4 col-12" v-if="profile.resume" :href="profile.resume"><i
                                 class="mdi mdi-file-account fs-1"></i>
                             <div class="text-black">My highlight reel!</div>
                         </a>
-                        <a class="col-md-2 col-12" v-if="profile.class" :href="profile.class"><i
+                        <a class="col-md-4 col-12" v-if="profile.class" :href="profile.class"><i
                                 class="mdi mdi-account-group fs-1"></i>
                             <div class="text-black">{{ profile.class }}</div>
                         </a>
-                        <a class="col-md-2 col-12">
-                            <i v-if="profile.graduated == true" :href="profile.graduated" class="mdi mdi-school fs-1"></i>
-                            <i v-else :href="profile.graduated" class="mdi mdi-school-outline fs-1"></i>
-                        </a>
-                        <div v-if="profile.graduated == true" :href="profile.graduated" class="text-black">Graduated</div>
-                        <div v-else :href="profile.graduated" class="text-black">Finishing classes</div>
+                        <div>
+                            <a class="col-md-4 col-12">
+                                <i v-if="profile.graduated == true" :href="profile.graduated"
+                                    class="mdi mdi-school fs-1"></i>
+                                <i v-else :href="profile.graduated" class="mdi mdi-school-outline fs-1"></i>
+                            </a>
+                            <div v-if="profile.graduated == true" :href="profile.graduated" class="text-black">Graduated
+                            </div>
+                            <div v-else :href="profile.graduated" class="text-black">Finishing classes</div>
+                        </div>
+
 
                     </div>
                 </div>
-
             </div>
             <div class="col-8">
                 <p>{{ profile.bio }}</p>
+                <span v-for="seller in sellers" :key="seller.title">
+                    <!-- NO 'S' HERE⬇️ -->
+                    <!-- <img :src="seller.tall" alt=""> -->
+                    <SellerBanner :seller="seller" />
+                </span>
+                <div v-for="post in posts" :key="post.id" class=" g-1">
+                    <PostCard :post="post" />
+                </div>
 
             </div>
         </div>
@@ -68,7 +80,7 @@
 <script>
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
-import { postsService } from '../services/PostsService.js';
+import { sellersService } from '../services/SellersService.js';
 import { logger } from '../utils/Logger.js';
 import { profilesService } from '../services/ProfileService.js';
 import { useRoute } from 'vue-router';
@@ -90,11 +102,11 @@ export default {
                 Pop.error(error.message)
             }
         }
-
-        async function getPostByProfile() {
+        // remember to check for rogue "s"s
+        async function getPostsByProfile() {
             try {
                 const profileId = route.params.profileId
-                await postsService.getPostByProfile(profileId)
+                await profilesService.getPostsByProfile(profileId)
             } catch (error) {
                 Pop.error('Does this person even post?', error)
             }
@@ -102,10 +114,24 @@ export default {
 
         onMounted(() => {
             getActiveProfile()
-            getPostByProfile()
+            getPostsByProfile()
+            getSellers()
+
         })
+        async function getSellers() {
+            try {
+                await sellersService.getSellers();
+                logger.log('are sellers coming back?');
+            }
+            catch (error) {
+                Pop.error(error);
+            }
+        }
         return {
-            profile: computed(() => AppState.activeProfile)
+            profile: computed(() => AppState.activeProfile),
+            posts: computed(() => AppState.posts),
+            sellers: computed(() => AppState.sellers)
+
         }
     }
 }
@@ -169,9 +195,17 @@ export default {
 
 
 <style lang="scss" scoped>
+@media (mAX-width: 768px) {
+
+    #bioLinks {
+        height: 5vh;
+
+    }
+}
+
 .profile-pic {
-    height: 20vh;
-    width: 20vh;
+    height: 25vh;
+    width: 25vh;
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
@@ -183,13 +217,14 @@ export default {
     backdrop-filter: blur(50px) opacity(0.95);
     // border: 5px black;
     // box-shadow: 0 1px 15px whitesmoke;
+    // position: sticky
 }
 
 #bioLinks {
-    height: 10vh;
+    // height: 20vh;
     width: 100%;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
 }
 </style>
