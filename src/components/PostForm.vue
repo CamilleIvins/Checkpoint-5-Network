@@ -3,7 +3,7 @@
         <!-- <div class="col-11">
             <input v-model="postData.body" type="text" class="form-control" placeholder="Title" maxlength="75">
         </div> -->
-        <div class="col-11">
+        <div class="col-10">
             <input v-model="postData.imgUrl" type="text" class="form-control" placeholder="Cover photo" maxlength="200">
         </div>
         <textarea v-model="postData.body" name="newPost" id="newPost" class="form-control" rows="5"

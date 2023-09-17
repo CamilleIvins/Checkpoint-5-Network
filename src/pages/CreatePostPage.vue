@@ -1,6 +1,6 @@
 <template>
     <div class="component">
-        <PostForm />
+        <!-- <PostForm /> -->
 
         Thanks for (over)sharing
     </div>

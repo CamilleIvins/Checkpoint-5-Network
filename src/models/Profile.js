@@ -1,5 +1,9 @@
+import { logger } from "../utils/Logger.js"
+
 export class Profile {
     constructor(data) {
+        this._id = data.id
+        logger.log(this._id)
         this.subs = data.subs
         this.email = data.email
         this.name = data.name
@@ -12,6 +16,7 @@ export class Profile {
         this.class = data.class
         this.graduated = data.graduated
     }
+
 }
 
 

@@ -8,12 +8,22 @@ export const AppState = reactive({
 
   // posts section
 
-  /** @type {Post[]} */
+  /** @type {import('./models/Post.js')Post[]} */
   // /** @type {import('./models/Post.js').Post}*/
   posts: [],
 
-  /** @type {Post} */
+  /** @type {import('./models/Post.js')Post[]} */
   activePost: null,
+  // page nav section
+
+  // profile section
+  /** @type {import('./models/Profile.js')Profile[]} */
+  // /** @type {import('./models/Profile.js').Profile}*/
+  profiles: [],
+
+  /** @type {Profile} */
+  // should this be null?
+  activeProfile: {},
   // page nav section
 
   /** @type {Number} */
