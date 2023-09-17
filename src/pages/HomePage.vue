@@ -10,15 +10,15 @@
     <textarea name="postText" id="postText" class="form-control" placeholder="Type away"></textarea>
     <button class="btn col-3 mt-3">Post!</button>
   </form> -->
-  <div class="container">
+  <div class="container-fluid">
 
 
     <!-- move to Create Post -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center bg-img">
       <div class="text-center">
 
         <router-link :to="{ name: 'Create Post' }">
-          <img src="../assets/img/Network-logo-button.png" id="createPost" class="rounded mt-2" alt="">
+          <img src="../assets/img/Network-logo-button.png" id="createPost" class="rounded my-2 elevation-4" alt="">
         </router-link>
 
       </div>
@@ -43,14 +43,14 @@
       <!-- <div class="my-5 text-white p-3 rounded text-center"> -->
       <!-- Posts really need to start showing up here -->
       <!--          ⬇️ this is the wrong color, leave uncommented for now -->
-      <div v-for="post in posts" :key="post.id" class="col-12 g-1">
+      <div v-for="post in posts" :key="post.id" class=" g-1">
         <PostCard :post="post" />
         <!-- {{ post.creator.class }} -->
       </div>
       <!-- </div> -->
       <!-- </div> -->
       <!-- </div> -->
-
+      <!-- PLACE ADS HERE, NAMED 'SELLERS' -->
     </section>
   </div>
 </template>
@@ -129,6 +129,12 @@ export default {
       object-position: center;
     }
   }
+}
+
+.bg-img {
+  background-image: url(https://plus.unsplash.com/premium_photo-1661715812379-23d652805042?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80);
+  object-position: center;
+  object-fit: cover;
 }
 
 #createPost {

@@ -1,7 +1,7 @@
 <template>
-    <div class="container selectable" @click="setActivePost">
+    <div class="container col-md-7 col-10  my-2" @click="setActivePost">
         <div class="row">
-            <div class="p-2 col-4 post-card w-100 rounded elevation-5">
+            <div class="p-2 post-card w-100 rounded elevation-5">
 
                 <div class="d-flex justify-content-between">
                     <router-link :to="{ name: 'Profile' }">
@@ -10,16 +10,27 @@
                     <!-- TODO make this name and/or the profile pic clickable to bring user to the profile page.  -->
                     <!-- <p>{{ post.creator.name }} {{ post.creator.class }}</p> -->
                     <div>
-                        <img class="post-image" :src="post.imgUrl" alt="">
+                        Created on: {{ post.createdAt }}
+                        <p>
+                            Updated on: {{ post.updatedAt }}
+                        </p>
+                        <div class="text-end fs-3 selectable pe-3">
+                            <i class="mdi mdi-heart"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="">
-                    <div>{{ post.body }}</div>
+                <div class="card shadow rounded">
+                    <img class="post-image" :src="post.imgUrl" alt="">
+
                 </div>
-                <!-- <div class="d-flex justify-content-between">
-                    <button v-if="activePost.creator.id == account.id" @click="editPost">Polish</button>
-                    <button v-if="activePost.creator.id == account.id" @click="deletePost">Delete</button>
-                </div> -->
+
+                <div class="">
+                    <div class="p-1">{{ post.body }}</div>
+                </div>
+                <div v-if="post.creator.id == account.id" class="d-flex justify-content-end">
+                    <button class=" mx-3 btn polish" @click="editPost">Polish</button>
+                    <button class=" mx-3 btn btn-danger text-light" @click="deletePost">Delete</button>
+                </div>
             </div>
             <!-- <div class="col-6"></div> -->
         </div>
@@ -46,9 +57,11 @@ export default {
         logger.log('appstate activePost', AppState.activePost)
         return {
             coverImg: computed(() => `url(${props.post.imgUrl})`),
+            account: computed(() => AppState.account),
 
             setActivePost() {
                 postsService.setActivePost(props.post.id)
+                logger.log(props.post.id)
             }
         }
     }
@@ -60,21 +73,33 @@ export default {
 .post-card {
     border: 2px;
     border-radius: 5px;
-    height: 20vh;
+    height: 50vh;
+    overflow-y: hidden;
     width: 15vw;
+    background-color: seashell;
+}
+
+.polish {
+    background-color: #cff4fc;
 }
 
 .post-image {
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
-    height: 15vh;
-    width: 15vw;
+    height: 30vh;
+    width: 100%;
 }
 
 .profile-pic {
     object-fit: contain;
     object-position: center;
-    height: 15vh;
-    width: 15vw;
+    height: 10vh;
+    width: 10vw;
+    margin-bottom: 1em;
+}
+
+.profile-pic:hover {
+    transform: scale(1.03);
+    transition: 0.25s ease;
 }
 </style>

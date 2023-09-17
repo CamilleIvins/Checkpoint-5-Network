@@ -1,5 +1,5 @@
 <template>
-    <div class="component row justify-content-center">
+    <div v-if="activeProfile" class="component row justify-content-center">
         <div class="col-md-6 col-12">
             <!-- get from the profile details page -->
             <!-- <div>
