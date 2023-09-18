@@ -7,9 +7,9 @@
     <main>
       <router-view />
     </main>
-    <footer class="bg-dark text-light sticky-top">
+    <!-- <footer class="bg-dark text-light sticky-top">
       Made with 💖 by CodeWorks
-    </footer>
+    </footer> -->
   </body>
 </template>
 
