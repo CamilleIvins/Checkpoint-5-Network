@@ -24,12 +24,30 @@
 
       </div>
     </div>
+    <section class="row justify-content-center">
+      <div class="col-9">
 
-    <section class="row justify-content-between my-2">
+        <SearchPage />
+      </div>
+    </section>
+    <section v-if="!activeSearch" class="row justify-content-between my-2">
       <button @click="changePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3">
         <i class="mdi mdi-arrow-left"></i> Tony
       </button>
       <button @click="changePage(pageNumber + 1)" :disabled="pageNumber >= totalPages" class="col-3">
+        Passé <i class="mdi mdi-arrow-right"></i>
+      </button>
+
+    </section>
+    <section v-else class="row justify-content-between my-2">
+      <div class="my-1">
+        Searching for: <span @click="clearSearch" class="border border-primary rounded-pill p-2">{{ activeSearch }}
+          <i class="mdi mdi-close"></i></span>
+      </div>
+      <button @click="changePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3 search">
+        <i class="mdi mdi-arrow-left"></i> Tony
+      </button>
+      <button @click="changePage(pageNumber + 1)" :disabled="pageNumber >= totalPages" class="col-3 search">
         Passé <i class="mdi mdi-arrow-right"></i>
       </button>
 
@@ -44,7 +62,7 @@
       <!-- <div class="my-5 text-white p-3 rounded text-center"> -->
       <!-- Posts really need to start showing up here -->
       <div class="col-md-8 col-12 g-1 mx-0">
-        <!--          ⬇️ this is the wrong color, leave uncommented for now -->
+        <!--          ⬇️ this is the wrong color, leave uncommented for now ✅-->
         <div v-for="post in posts" :key="post.id">
           <PostCard :post="post" />
           <!-- {{ post.creator.class }} -->
@@ -60,12 +78,12 @@
           <!-- NO 'S' HERE⬇️ -->
           <!-- <img :src="seller.tall" alt=""> -->
           <SellerCard :seller="seller" />
-          <!-- {{ seller.banner }} this shows up, so draw can work -->
+          <!-- {{ seller.banner }} this shows up, so draw can work ✅-->
         </span>
       </div>
     </section>
 
-    <section class="row justify-content-between my-2">
+    <section v-if="!activeSearch" class="row justify-content-between my-2">
       <button @click="changePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3">
         <i class="mdi mdi-arrow-left"></i> Tony
       </button>
@@ -74,11 +92,21 @@
       </button>
 
     </section>
+
+    <section v-else class="row justify-content-between my-2">
+      <button @click="changePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3 search">
+        <i class="mdi mdi-arrow-left"></i> Tony
+      </button>
+      <button @click="changePage(pageNumber + 1)" :disabled="pageNumber >= totalPages" class="col-3 search">
+        Passé <i class="mdi mdi-arrow-right"></i>
+      </button>
+    </section>
+
   </div>
 </template>
 
 <script>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Pop from '../utils/Pop.js';
 import { postsService } from '../services/PostsService.js';
 import { sellersService } from '../services/SellersService.js';
@@ -87,9 +115,10 @@ import { logger } from '../utils/Logger.js';
 import { Post } from '../models/Post.js';
 import { useRoute, useRouter } from 'vue-router';
 // import { profilesService } from '../services/ProfilesService.js';
-// ⬆️ causes errors UPDATE: am leaving this in b/c --> ⬆️IT WAS AN 'S'
+// ⬆️ causes errors UPDATE: am leaving this in b/c --> ⬆️IT WAS AN 'S' <--✅
 import { profilesService } from '../services/ProfileService.js';
 import { Profile } from '../models/Profile.js';
+import SearchPage from './SearchPage.vue';
 
 // import PostCard from '../components/PostCard.vue.js';
 // import { PostCard } from '../components/PostCard.vue';
@@ -98,10 +127,10 @@ export default {
   // props: { profile: { type: Profile, required: true } },
   // removed "props" from setup argument
   setup() {
-    const route = useRoute()
+    const route = useRoute();
+    const searchTerm = ref('')
     // onMounted to draw
     onMounted(() => {
-
       getPosts();
       getSellers();
     });
@@ -109,7 +138,7 @@ export default {
     async function getPosts() {
       try {
         await postsService.getPosts();
-        logger.log('are posts coming back?');
+        // logger.log('are posts coming back?'); <--✅
       }
       catch (error) {
         Pop.error(error);
@@ -118,33 +147,50 @@ export default {
     async function getSellers() {
       try {
         await sellersService.getSellers();
-        logger.log('are sellers coming back?');
+        // logger.log('are sellers coming back?'); <--✅
       }
       catch (error) {
         Pop.error(error);
       }
     }
-
-
     return {
       getPosts,
       getSellers,
-
+      searchTerm,
       // setActiveProfile() {
       //   profilesService.setActiveProfile(props.profile.name)
       //   logger.log("profile id", props.profile.name)
       // },
-
       // change pages function,
       async changePage(number) {
         try {
-          await postsService.changePage(`api/posts?page=${number}`)
-        } catch (error) {
-          Pop.error(error)
+          await postsService.changePage(`api/posts?page=${number}`);
+        }
+        catch (error) {
+          Pop.error(error);
         }
       },
 
+      async changeSearchPage(number) {
+        try {
+          const searchTerm = AppState.searchTerm
+          await postsService.changePage(`api/posts?query=${searchTerm}&page=${number}`);
+        }
+        catch (error) {
+          Pop.error(error);
+        }
+      },
+
+      // async clearSearch() {
+      //   if (await Pop.confirm('Clear search results?')) { searchTerm.value = '' }
+      //   let activeSearch = null
+      //   logger.log(activeSearch)
+      //   getPosts()
+      // },
+
       // activeProfile: computed(() => AppState.activeProfile),
+
+      activeSearch: computed(() => AppState.searchTerm),
       posts: computed(() => AppState.posts),
       pageNumber: computed(() => AppState.pageNumber),
       totalPages: computed(() => AppState.totalPages),
@@ -152,7 +198,7 @@ export default {
       sellers: computed(() => AppState.sellers)
     };
   },
-  // components: { PostCard }
+  components: { SearchPage }
 }
 </script>
 
@@ -199,6 +245,11 @@ export default {
 
 button {
   background-color: rgb(136, 185, 228);
+  border-radius: 10em;
+}
+
+button.search {
+  background-color: seashell;
   border-radius: 10em;
 }
 </style>

@@ -37,9 +37,9 @@ export default {
             // creat/post
             async createPost() {
                 try {
-                    logger.log('new post up?', postData.value)
                     const newPost = await postsService.createPost(postData.value)
                     Pop.toast('ready to go viral!')
+                    logger.log('new post up?', newPost)
                     router.push({ name: 'Home' })
                     postData.value = {}
                 } catch (error) {

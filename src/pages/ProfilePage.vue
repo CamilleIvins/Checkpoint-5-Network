@@ -96,7 +96,7 @@ export default {
             try {
                 //    this returning 'Object Object'⬇️
                 const profileId = route.params.profileId
-                logger.log('profile route', route.params.profileId)
+                // logger.log('profile route', route.params.profileId) <--✅
                 await profilesService.getActiveProfile(profileId)
             } catch (error) {
                 Pop.error(error.message)
@@ -121,7 +121,7 @@ export default {
         async function getSellers() {
             try {
                 await sellersService.getSellers();
-                logger.log('are sellers coming back?');
+                // logger.log('are sellers coming back?'); <--✅
             }
             catch (error) {
                 Pop.error(error);

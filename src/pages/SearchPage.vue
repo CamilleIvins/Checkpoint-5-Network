@@ -1,16 +1,14 @@
 <template>
-    <form class="component row justify-content-between">
+    <form @submit.prevent="searchPosts" class="component row justify-content-between">
         <div class="mb-1 col-12 input-group">
-            <input type="text" class="form-control" placeholder="search" maxlength="=25">
+            <input v-model="searchTerm" type="text" class="form-control" placeholder="search" maxlength="25">
             <button class="btn"><i class="mdi mdi-magnify"></i></button>
         </div>
-
+        <div v-if="activeSearch" class="my-1">
+            Searching for: <span @click="clearSearch" class="border border-primary rounded-pill p-2">{{ searchTerm }}
+                <i class="mdi mdi-close"></i></span>
+        </div>
     </form>
-
-    <div v-if="activeSearch" class="my-1">
-        Searchcing for: <span>span class="border border-primary rounded-pill p-2">{{ activeSearch }} <button
-                @click="clearSearch()" class="btn"><i class="mdi mdi-close"></i></button></span>
-    </div>
 </template>
 
 
@@ -26,8 +24,8 @@ export default {
         const searchTerm = ref('')
         return {
             searchTerm,
-            activeSearch: computed(() => AppState.searchTerm),
 
+            activeSearch: computed(() => AppState.searchTerm),
             async searchProfiles(event) {
                 try {
                     await profilesService.searchProfiles(searchTerm.value)
@@ -49,9 +47,17 @@ export default {
             },
 
             async clearSearch() {
-                if (await Pop.confirm('Clear search results?'))
-                    searchTerm.value = ''
-            }
+                try {
+                    if (await Pop.confirm('Clear search results?')) {
+                        await postsService.clearSearch()
+                    }
+                } catch (error) {
+                    Pop.error(error)
+                }
+
+                // getPosts()
+            },
+
         }
     }
 };

@@ -8,7 +8,7 @@
                         <!-- , params: { profileName: profile.name }  -->
                         <img class="profile-pic" :src="post.creator.picture" @click="setActiveProfile">
                     </router-link>
-                    <!-- TODO make this name and/or the profile pic clickable to bring user to the profile page.  -->
+                    <!-- TODO make this name and/or the profile pic clickable to bring user to the profile page.✅-->
                     <!-- <p>{{ post.creator.name }} {{ post.creator.class }}</p> -->
                     <div>
                         Created on: <Timeago :refresh="60" :datetime="post.createdAt" locale="en"></Timeago>
@@ -38,15 +38,9 @@
 
                 </div>
             </div>
-            <!-- <div class="col-6"></div> -->
+
         </div>
     </div>
-    <!-- <div class="component post-card">
-        {{ post.imgUrl }} -->
-    <!-- <div v-if="account.picture || user.picture">
-            <img :src="account.picture || user.picture" alt="account photo" height="40" class="rounded" />
-        </div> -->
-    <!-- </div> -->
 </template>
 
 

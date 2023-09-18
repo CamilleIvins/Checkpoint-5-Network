@@ -69,7 +69,7 @@ class PostsService {
     async searchPosts(searchTerm) {
         const res = await api.get(`api/posts?query=${searchTerm}`)
         logger.log('posts query res.data', res.data)
-        AppState.posts = res.data.map(post => new Post(post))
+        AppState.posts = res.data.posts.map(post => new Post(post))
         AppState.searchTerm = searchTerm
         AppState.totalPages = res.data.totalPages
     }
@@ -82,7 +82,12 @@ class PostsService {
     setActiveProfile(profileId) {
         const profile = AppState.profiles.find(profile => profile.id == profileId)
         AppState.setActiveProfile = profile
-        logger.log('profile id?', profileId)
+        // logger.log('profile id?', profileId) <--✅
+    }
+
+    async clearSearch() {
+        AppState.searchTerm = ''
+        await postsService.getPosts()
     }
 
 }
