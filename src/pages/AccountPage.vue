@@ -28,6 +28,11 @@
       </div>
 
       <hr>
+      <section class="row justify-content-center">
+        <img src="../assets/img/Network-logo-3.png" id="update-profile" class="rounded my-2 mb-4 elevation-4">
+
+      </section>
+
       <div class="row">
 
         <i class="mdi mdi-linkedin fs-1 col-1 text-end"></i>
@@ -153,11 +158,12 @@ img {
   object-position: center; */
   margin: 0;
   padding: 0;
+  box-shadow: 0 0 10px 5px whitesmoke;
+  max-width: 200px !important
 }
 
-#update-profile:hover {
+/* #update-profile:hover {
   transform: scale(1.1);
   transition: .5s ease;
-  box-shadow: 0 0 10px 5px whitesmoke;
-}
+} */
 </style>
