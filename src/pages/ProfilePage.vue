@@ -68,10 +68,10 @@
         </div> -->
     </div>
 
-    draw all the posts from this profile below
+    <!-- draw all the posts from this profile below -->
     <!-- </div> -->
     <!-- </div> -->
-    Profile page!!!!
+    <!-- Profile page!!!! -->
 
     <!-- {{ AppState.activeProfile }} -->
 </template>
