@@ -7,7 +7,7 @@
       <p>{{ account.email }}</p>
     </div>
 
-    <form @submit.prevent="updateId()" class="row">
+    <form @submit.prevent="editProfile()" class="row">
 
       <div class="form-floating mb-2 col-md-6 col-12">
         <input v-model="editable.name" required type="text" minlength="3" maxlength="50" class="form-control" id="name"
@@ -41,7 +41,7 @@
         <i class="mdi mdi-github fs-1 col-1 text-end"></i>
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
-            <input v-model="editable.github" type="text" maxlength="100" class="form-control" id="github"
+            <input v-model="editable.github" type="text" maxlength="500" class="form-control" id="github"
               placeholder="github">
             <label for="github">Share Profile</label>
           </div>
@@ -53,7 +53,7 @@
         <i class="mdi mdi-email fs-1 col-1 text-end"></i>
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
-            <input v-model="editable.email" type="text" maxlength="100" class="form-control" id="email"
+            <input v-model="editable.email" type="text" maxlength="500" class="form-control" id="email"
               placeholder="email">
             <label for="email">Share Contact Info</label>
           </div>
@@ -61,7 +61,7 @@
         <i class="mdi mdi-file-account fs-1 col-1 text-end"></i>
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
-            <input v-model="editable.resume" type="text" maxlength="100" class="form-control" id="resume"
+            <input v-model="editable.resume" type="text" maxlength="500" class="form-control" id="resume"
               placeholder="resume">
             <label for="resume">Share History</label>
           </div>
@@ -74,7 +74,7 @@
         <i class="mdi mdi-account-group fs-1 col-1 text-end"></i>
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
-            <input v-model="editable.class" type="text" maxlength="100" class="form-control" id="class"
+            <input v-model="editable.class" type="text" maxlength="500" class="form-control" id="class"
               placeholder="class">
             <label for="class">Share Education</label>
           </div>
@@ -89,9 +89,13 @@
         </span>
 
       </div>
+      <div class="row justify-content-center mb-2">
+
+        <textarea v-model="editable.bio" name="bio" id="bio" class="col-md-10 ms-md-4 ms-0 col-12" cols="30" rows="10"
+          maxlength="1000" placeholder="Bio of champions"></textarea>
+      </div>
       <div class="row justify-content-center">
-        <img type="submit" src="../assets/img/Network-logo-button.png" id="update-profile"
-          class="rounded my-2 elevation-4">
+        <button type="submit" class="rounded my-2 col-6 elevation-4" id="update-profile">Share!</button>
 
       </div>
     </form>
@@ -99,30 +103,36 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { AppState } from '../AppState';
 import Pop from '../utils/Pop.js';
 import { accountService } from '../services/AccountService.js';
+import { logger } from '../utils/Logger.js';
 export default {
   setup() {
     const editable = ref({})
+    // But will it work when *I* run it...
+    watchEffect(() => {
+      logger.log(`let's see the watchEffect magic`)
+      editable.value = { ...AppState.account }
+    })
 
     return {
       editable,
       account: computed(() => AppState.account),
 
-      handleSubmit() {
-        if (editable.value.id) {
-          this.account()
-        } else {
-          Pop.error("error in editing profile")
-        }
-      },
+      // handleSubmit() {
+      //   if (editable.value.id) {
+      //     this.account()
+      //   } else {
+      //     Pop.error("error in editing profile")
+      //   }
+      // },
 
       async editProfile() {
         try {
-          const accountData = editable.value
-          await accountService.editProfile(accountData)
+          const formData = editable.value
+          await accountService.editProfile(formData)
         } catch (error) {
           Pop.error(error)
         }
@@ -138,9 +148,9 @@ img {
 }
 
 #update-profile {
-  width: 100%;
+  /* width: 100%;
   object-fit: contain;
-  object-position: center;
+  object-position: center; */
   margin: 0;
   padding: 0;
 }

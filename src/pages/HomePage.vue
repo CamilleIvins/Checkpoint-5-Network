@@ -58,7 +58,7 @@
           class="rounded-circle"> -->
       <!-- <div class="my-5 text-white p-3 rounded text-center"> -->
       <!-- Posts really need to start showing up here -->
-      <div class="col-md-8 col-12 g-1 mx-0">
+      <div class="col-md-7 col-12 g-1 mx-0">
         <!--          ⬇️ this is the wrong color, leave uncommented for now ✅-->
         <div v-for="post in posts" :key="post.id">
           <PostCard :post="post" />

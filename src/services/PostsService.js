@@ -93,7 +93,7 @@ class PostsService {
     async like(postId) {
         const post = AppState.posts.find(post => post.id == postId)
         let liker = AppState.account.id
-        const res = await api.put(`api/posts/${post}/likes`, liker)
+        const res = await api.put(`api/posts/${liker}/likes`, liker)
         logger.log("likeable?", res.data)
     }
 

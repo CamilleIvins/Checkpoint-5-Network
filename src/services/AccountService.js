@@ -13,12 +13,15 @@ class AccountService {
     }
   }
 
-  async editProfile(accountData) {
-    const res = await api.put(`api/account`, accountData)
+  async editProfile(formData) {
+    //There's NO 'api' in front⬇️
+    const res = await api.put('/account', formData)
     logger.log("edit account details", res.data)
 
     const updatedAccount = new Account(res.data)
     AppState.account = updatedAccount
+
+    // form.reset()
   }
 }
 

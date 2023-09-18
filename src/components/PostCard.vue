@@ -1,7 +1,7 @@
 <template>
-    <div @click="setActivePost()" class="container mx-0 my-2">
+    <div @click="setActivePost()" class="container mx-0 my-3">
         <div class="row">
-            <div class="p-2 post-card w-100 rounded elevation-5">
+            <div class="p-2  w-100 rounded elevation-5">
 
                 <div class="d-flex justify-content-between">
                     <router-link :to="{ name: 'Profile', params: { profileId: post.creator.id } }">
@@ -16,7 +16,7 @@
                             Updated on: <Timeago :refresh="60" :datetime="post.updatedAt" locale="en"></Timeago>
                         </p>
                         <div class="text-end fs-3 pe-3">
-                            <i class="mdi mdi-heart selectable" @click="like"></i>
+                            <i class="mdi mdi-heart selectable" @click="like()"></i>
                         </div>
                     </div>
                 </div>
@@ -26,12 +26,12 @@
                 </div>
 
                 <div class="">
-                    <div class="p-1">{{ post.body }}</div>
+                    <div class="p-1 ellipsis">{{ post.body }}</div>
                 </div>
                 <div v-if="post.creator.id == account.id" class="d-flex justify-content-end">
                     <div>
-                        <button class=" mx-3 btn polish" @click="editPost">Polish</button>
-                        <span @click="setActivePost()">
+                        <button class=" mx-3 btn polish" @click="editPost()">Polish</button>
+                        <span>
                             <button class=" mx-3 btn btn-danger text-light" @click="deletePost()">Delete</button>
                         </span>
                     </div>
@@ -114,9 +114,13 @@ export default {
     border: 2px;
     border-radius: 5px;
     height: 60vh;
-    overflow-y: hidden;
+    // overflow-y: hidden;
     width: 15vw;
     background-color: seashell;
+}
+
+.ellispis {
+    text-overflow: ellipsis
 }
 
 .polish {
@@ -126,7 +130,7 @@ export default {
 .post-image {
     object-fit: cover;
     object-position: center;
-    height: 30vh;
+    height: 40vh;
     width: 100%;
 }
 
