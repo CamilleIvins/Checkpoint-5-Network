@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-0 my-2">
+    <div @click="setActivePost()" class="container mx-0 my-2">
         <div class="row">
             <div class="p-2 post-card w-100 rounded elevation-5">
 
@@ -16,7 +16,7 @@
                             Updated on: <Timeago :refresh="60" :datetime="post.updatedAt" locale="en"></Timeago>
                         </p>
                         <div class="text-end fs-3 pe-3">
-                            <i class="mdi mdi-heart selectable"></i>
+                            <i class="mdi mdi-heart selectable" @click="like"></i>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                     <div class="p-1">{{ post.body }}</div>
                 </div>
                 <div v-if="post.creator.id == account.id" class="d-flex justify-content-end">
-                    <div @click="setActivePost()">
+                    <div>
                         <button class=" mx-3 btn polish" @click="editPost">Polish</button>
                         <span @click="setActivePost()">
                             <button class=" mx-3 btn btn-danger text-light" @click="deletePost()">Delete</button>
@@ -85,7 +85,16 @@ export default {
                 }
             },
 
-            setActivePost() {
+            async like() {
+                try {
+                    await postsService.like(props.post.likeIds)
+                    Pop.toast('Aww, you really do like this post!')
+                } catch (error) {
+                    Pop.error(error)
+                }
+            },
+
+            async setActivePost() {
                 postsService.setActivePost(props.post.id)
                 logger.log("post ID", props.post.id)
             },
@@ -93,6 +102,7 @@ export default {
                 postsService.setActiveProfile(props.post.creator.id)
                 logger.log("post.creator (yes ID))", props.post.creator.id)
             },
+
         }
     }
 };

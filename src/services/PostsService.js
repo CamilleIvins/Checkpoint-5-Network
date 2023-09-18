@@ -49,7 +49,7 @@ class PostsService {
 
     async getPostById(postId) {
         AppState.activePost = null
-        const res = await api.get(`api/cars/${postId}`)
+        const res = await api.get(`api/posts/${postId}`)
         logger.log('active post', res.data)
         AppState.activePost = new Post(res.data)
 
@@ -74,7 +74,7 @@ class PostsService {
         AppState.totalPages = res.data.totalPages
     }
 
-    setActivePost(postId) {
+    async setActivePost(postId) {
         const post = AppState.posts.find(post => post.id == postId)
         AppState.activePost = post
     }
@@ -88,6 +88,13 @@ class PostsService {
     async clearSearch() {
         AppState.searchTerm = ''
         await postsService.getPosts()
+    }
+
+    async like(postId) {
+        const post = AppState.posts.find(post => post.id == postId)
+        let liker = AppState.account.id
+        const res = await api.put(`api/posts/${post}/likes`, liker)
+        logger.log("likeable?", res.data)
     }
 
 }

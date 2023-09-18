@@ -4,7 +4,7 @@ export class Post {
         this.body = data.body
         this.imgUrl = data.imgUrl
         this.creator = data.creator
-        this.likIds = data.likIds
+        this.likeIds = data.likeIds
         this.likes = data.likes
         this.createdAt = data.createdAt
         this.updatedAt = data.updatedAt
