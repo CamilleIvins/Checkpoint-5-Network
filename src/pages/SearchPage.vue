@@ -5,7 +5,7 @@
             <button class="btn"><i class="mdi mdi-magnify"></i></button>
         </div>
         <div v-if="activeSearch" class="my-1">
-            Searching for: <span @click="clearSearch" class="border border-primary rounded-pill p-2">{{ searchTerm }}
+            Searching for: <span @click="clearSearch" class="border border-primary rounded-pill p-2">{{ activeSearch }}
                 <i class="mdi mdi-close"></i></span>
         </div>
     </form>
@@ -50,6 +50,7 @@ export default {
                 try {
                     if (await Pop.confirm('Clear search results?')) {
                         await postsService.clearSearch()
+                        searchTerm.value = ''
                     }
                 } catch (error) {
                     Pop.error(error)

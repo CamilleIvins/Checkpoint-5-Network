@@ -29,6 +29,7 @@
 
         <SearchPage />
       </div>
+
     </section>
     <section v-if="!activeSearch" class="row justify-content-between my-2">
       <button @click="changePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3">
@@ -40,10 +41,6 @@
 
     </section>
     <section v-else class="row justify-content-between my-2">
-      <div class="my-1">
-        Searching for: <span @click="clearSearch" class="border border-primary rounded-pill p-2">{{ activeSearch }}
-          <i class="mdi mdi-close"></i></span>
-      </div>
       <button @click="changePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3 search">
         <i class="mdi mdi-arrow-left"></i> Tony
       </button>
@@ -180,13 +177,6 @@ export default {
           Pop.error(error);
         }
       },
-
-      // async clearSearch() {
-      //   if (await Pop.confirm('Clear search results?')) { searchTerm.value = '' }
-      //   let activeSearch = null
-      //   logger.log(activeSearch)
-      //   getPosts()
-      // },
 
       // activeProfile: computed(() => AppState.activeProfile),
 

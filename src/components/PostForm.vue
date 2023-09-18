@@ -9,7 +9,7 @@
         <textarea v-model="postData.body" name="newPost" id="newPost" class="form-control" rows="5"
             placeholder="Type away"></textarea>
 
-        <button class="btn col-3 mt-3">Post!</button>
+        <button class="btn col-3 my-2">Post!</button>
     </form>
 </template>
 
