@@ -34,6 +34,9 @@ class ProfilesService {
         const profilePosts = res.data.posts.map(proPosts => new Post(proPosts))
         AppState.posts = profilePosts
 
+        AppState.pTotalPages = res.data.totalPages
+
+
     }
 
     async searchProfiles(searchTerm) {

@@ -16,7 +16,7 @@
       </div>
 
       <div class="form-floating mb-2 col-md-6 col-12">
-        <input v-model="editable.email" required type="text" maxlength="50" class="form-control" id="email"
+        <input v-model="editable.email" required type="email" maxlength="50" class="form-control" id="email"
           placeholder="E-mail">
         <label for="email">E-mail</label>
       </div>
@@ -38,7 +38,7 @@
         <i class="mdi mdi-linkedin fs-1 col-1 text-end"></i>
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
-            <input v-model="editable.linkedin" type="text" maxlength="100" class="form-control" id="linkedin"
+            <input v-model="editable.linkedin" type="url" maxlength="100" class="form-control" id="linkedin"
               placeholder="linkedin">
             <label for="linkedin">Share Profile</label>
           </div>
@@ -46,7 +46,7 @@
         <i class="mdi mdi-github fs-1 col-1 text-end"></i>
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
-            <input v-model="editable.github" type="text" maxlength="500" class="form-control" id="github"
+            <input v-model="editable.github" type="url" maxlength="500" class="form-control" id="github"
               placeholder="github">
             <label for="github">Share Profile</label>
           </div>
@@ -58,7 +58,7 @@
         <i class="mdi mdi-email fs-1 col-1 text-end"></i>
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
-            <input v-model="editable.email" type="text" maxlength="500" class="form-control" id="email"
+            <input v-model="editable.email" type="email" maxlength="500" class="form-control" id="email"
               placeholder="email">
             <label for="email">Share Contact Info</label>
           </div>
@@ -66,6 +66,7 @@
         <i class="mdi mdi-file-account fs-1 col-1 text-end"></i>
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
+            <!-- v-model does not work on type:file, suggestions are v-on:change see StackOverflow -->
             <input v-model="editable.resume" type="text" maxlength="500" class="form-control" id="resume"
               placeholder="resume">
             <label for="resume">Share History</label>

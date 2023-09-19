@@ -11,8 +11,8 @@
             <div class="col-4 px-0">
                 <div class="p-2 elevation-2 profile-card sticky-top">
 
-                    <h1>{{ profile.name }}</h1>
                     <img src="../assets/img/Network-logo-button.png" id="bioLinks" class="rounded my-2 ">
+                    <h1>{{ profile.name }}</h1>
 
                     <div class="row">
                         <a class="col-md-4 col-12" v-if="profile.linkedin" :href="profile.linkedin"><i
@@ -57,6 +57,16 @@
                     <!-- <img :src="seller.tall" alt=""> -->
                     <SellerBanner :seller="seller" />
                 </span>
+
+                <section class="row justify-content-between my-2">
+                    <button @click="pChangePage(pageNumber - 1)" :disabled="pageNumber <= 1" class="col-3 search">
+                        <i class="mdi mdi-arrow-left"></i> Tony
+                    </button>
+                    <button @click="pChangePage(pageNumber + 1)" :disabled="pageNumber >= totalPages" class="col-3 search">
+                        Passé <i class="mdi mdi-arrow-right"></i>
+                    </button>
+                </section>
+
                 <div v-for="post in posts" :key="post.id" class=" g-1">
                     <PostCard :post="post" />
                 </div>
@@ -82,6 +92,7 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import { sellersService } from '../services/SellersService.js';
 import { logger } from '../utils/Logger.js';
+import { postsService } from '../services/PostsService.js';
 import { profilesService } from '../services/ProfileService.js';
 import { useRoute } from 'vue-router';
 import Pop from '../utils/Pop.js';
@@ -128,9 +139,24 @@ export default {
             }
         }
         return {
+            async pChangePage(number) {
+                try {
+                    const profileId = route.params.profileId
+                    await postsService.pChangePage(`api/profiles/${profileId}/posts?page=${number}`)
+                } catch (error) {
+                    Pop.error('cannto change page, good sir')
+                }
+            },
+
+
             profile: computed(() => AppState.activeProfile),
             posts: computed(() => AppState.posts),
-            sellers: computed(() => AppState.sellers)
+            sellers: computed(() => AppState.sellers),
+            pageNumber: computed(() => AppState.pPageNumber),
+
+            totalPages: computed(() => AppState.pTotalPages),
+
+
 
         }
     }
@@ -201,6 +227,11 @@ export default {
         height: 5vh;
 
     }
+}
+
+button {
+    background-color: rgb(136, 185, 228);
+    border-radius: 10em;
 }
 
 .profile-pic {

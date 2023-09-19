@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUpdated, onUnmounted, ref } from 'vue';
 import Pop from '../utils/Pop.js';
 import { postsService } from '../services/PostsService.js';
 import { sellersService } from '../services/SellersService.js';
@@ -131,6 +131,10 @@ export default {
       getPosts();
       getSellers();
     });
+    onUpdated(() => {
+      // setActivePost()
+    })
+    onUnmounted(() => logger.log('unmounting homepage'))
     // 'async function' under setup, 'async' within return block
     async function getPosts() {
       try {
@@ -159,6 +163,13 @@ export default {
       //   logger.log("profile id", props.profile.name)
       // },
       // change pages function,
+
+      // async setActivePost() {
+      //   const postId = AppState.post.id
+      //   await postsService.setActivePost(postId)
+      //   logger.log("post id", postId)
+      // },
+
       async changePage(number) {
         try {
           await postsService.changePage(`api/posts?page=${number}`);

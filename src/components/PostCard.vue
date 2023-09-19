@@ -16,7 +16,7 @@
                             Updated on: <Timeago :refresh="60" :datetime="post.updatedAt" locale="en"></Timeago>
                         </p>
                         <div class="text-end fs-3 pe-3">
-                            <i class="mdi mdi-heart selectable" @click="like()"></i>
+                            <i class="mdi mdi-heart selectable" @click="like()">{{ post.likeIds.length }}</i>
                         </div>
                     </div>
                 </div>

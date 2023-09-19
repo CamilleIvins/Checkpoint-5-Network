@@ -14,6 +14,7 @@ class PostsService {
 
         // No 'map', or 'results'?
         AppState.posts = res.data.posts.map(post => new Post(post))
+        AppState.totalPages = res.data.totalPages
         // AppState.posts = res.data
     }
 
@@ -27,6 +28,14 @@ class PostsService {
         AppState.totalPages = res.data.totalPages
     }
 
+    async pChangePage(url) {
+        logger.log('url fo pagination on profile page', url)
+        const res = await api.get(url)
+        logger.log("is URL 1.) valid, and 2.) change?", res.data)
+        AppState.posts = res.data.posts.map(post => new Post(post))
+        AppState.pPageNumber = res.data.page
+        AppState.pTotalPages = res.data.totalPages
+    }
 
     async createPost(postData) {
         const res = await api.post('api/posts', postData)
@@ -52,6 +61,7 @@ class PostsService {
         const res = await api.get(`api/posts/${postId}`)
         logger.log('active post', res.data)
         AppState.activePost = new Post(res.data)
+
 
     }
 
@@ -94,9 +104,9 @@ class PostsService {
         const post = AppState.posts.find(post => post.id == postId)
         logger.log("correct id to like?", postId)
         let liker = AppState.account.id
-        // maybe I need to be splicing...
-        const res = await api.put(`api/posts/${liker}/likes`, liker)
-        logger.log("likeable?", res.data)
+        // maybe I need to be splicing...SINGULAR 'like'
+        const res = await api.post(`api/posts/${postId}/like`, liker)
+        logger.log("likeable?", res.data.liker)
     }
 
 }
