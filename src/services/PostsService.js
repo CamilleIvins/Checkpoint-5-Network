@@ -48,11 +48,12 @@ class PostsService {
         const postId = postData.id
         const res = await api.put(`api/posts/${postId}`, postData)
         logger.log(`editing`, res.data)
-        const editedPost = new Post(res.data)
         let postIndex = AppState.posts.findIndex(post => post.id == postId)
         if (postIndex >= 0) (
             AppState.posts.splice(postIndex, 1)
         )
+        const editedPost = new Post(res.data)
+        AppState.posts.push(editedPost)
         // return newPost
     }
 
@@ -103,12 +104,24 @@ class PostsService {
     async like(postId) {
         // const post = AppState.posts.find(post => post.id == postId)
         // AppState.activePost = post
+
         logger.log("correct id to like?", postId)
         // logger.log("correct id to like?", post)
         let liker = AppState.account.id
-        // maybe I need to be splicing...SINGULAR 'like'
         const res = await api.post(`api/posts/${postId.id}/like`, liker)
-        logger.log("likeable?", res.data.likeIds)
+        if (res.likeIds != liker) {
+            // maybe I need to be splicing...SINGULAR 'like'
+            logger.log("likeable?", res.data.likeIds)
+            postId.accountLiked = true
+        } else {
+            // res.likeIds.splice(postId.likeIds.liker)
+            res.likeIds -= liker
+            postId.accountLiked = false
+        }
+        // these two lines do not add anything, but are they necessary to make reactive?
+        const likedPost = new Post(postId)
+        AppState.posts.push(likedPost)
+
     }
 
 }

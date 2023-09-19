@@ -56,14 +56,11 @@ import { Timeago } from 'vue2-timeago'
 import Pop from '../utils/Pop.js';
 
 export default {
-    components: { Timeago },
     props: { post: { type: Post, required: true } },
+    components: { Timeago },
     setup(props) {
 
         return {
-            coverImg: computed(() => `url(${props.post.imgUrl})`),
-            account: computed(() => AppState.account),
-            activeProfile: computed(() => AppState.activeProfile),
 
             async deletePost() {
                 if (await Pop.confirm("Are you sure you wish to delete this?")) {
@@ -88,7 +85,13 @@ export default {
             async like() {
                 try {
                     const likedPost = await postsService.like(props.post)
-                    Pop.toast('Aww, you really do like this post!')
+                    if (props.post.accountLiked == true) {
+                        // this is always returning "true", possibly an issue with props (color is wrong on type: Post)
+                        Pop.toast('Aww, you really do like this post!')
+                    } else {
+                        Pop.toast('On second thought...')
+
+                    }
                     logger.log('post to like', likedPost)
                 } catch (error) {
                     Pop.error(error)
@@ -104,6 +107,10 @@ export default {
                 logger.log("post.creator (yes ID))", props.post.creator.id)
             },
 
+            coverImg: computed(() => `url(${props.post.imgUrl})`),
+            account: computed(() => AppState.account),
+            activeProfile: computed(() => AppState.activeProfile),
+            posts: computed(() => AppState.posts),
         }
     }
 };

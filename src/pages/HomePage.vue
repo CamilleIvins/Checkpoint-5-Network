@@ -133,6 +133,7 @@ export default {
     });
     onUpdated(() => {
       // setActivePost()
+      logger.log('updating homepage')
     })
     onUnmounted(() => logger.log('unmounting homepage'))
     // 'async function' under setup, 'async' within return block
