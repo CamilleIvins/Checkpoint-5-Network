@@ -41,7 +41,7 @@ class PostsService {
         const res = await api.post('api/posts', postData)
         logger.log(`new post?`, res.data)
         const newPost = new Post(res.data)
-        AppState.posts.push(newPost)
+        AppState.posts.unshift(newPost)
         // return newPost
     }
     async editPost(postData) {
