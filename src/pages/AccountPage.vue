@@ -67,7 +67,7 @@
         <span class="col-md-4 col-11">
           <div class="form-floating mb-2 ">
             <!-- v-model does not work on type:file, suggestions are v-on:change see StackOverflow -->
-            <input v-model="editable.resume" type="text" maxlength="500" class="form-control" id="resume"
+            <input v-on:change="editable.resume" type="file" maxlength="500" class="form-control" id="resume"
               placeholder="resume">
             <label for="resume">Share History</label>
           </div>
@@ -143,6 +143,7 @@ export default {
           Pop.error(error)
         }
       }
+
     }
   }
 }

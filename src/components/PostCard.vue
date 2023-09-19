@@ -87,8 +87,9 @@ export default {
 
             async like() {
                 try {
-                    await postsService.like(props.post.likeIds)
+                    const likedPost = await postsService.like(props.post)
                     Pop.toast('Aww, you really do like this post!')
+                    logger.log('post to like', likedPost)
                 } catch (error) {
                     Pop.error(error)
                 }

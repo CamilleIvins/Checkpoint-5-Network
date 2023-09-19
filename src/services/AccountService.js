@@ -18,6 +18,13 @@ class AccountService {
     const res = await api.put('/account', formData)
     logger.log("edit account details", res.data)
 
+    const resume = formData.target.resume || formData.dataTransfer.resume
+    if (!resume.length) {
+      return;
+    } else {
+      this.resume(resume[0])
+
+    }
     const updatedAccount = new Account(res.data)
     AppState.account = updatedAccount
 

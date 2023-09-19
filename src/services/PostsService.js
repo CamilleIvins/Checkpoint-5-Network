@@ -101,12 +101,14 @@ class PostsService {
     }
 
     async like(postId) {
-        const post = AppState.posts.find(post => post.id == postId)
+        // const post = AppState.posts.find(post => post.id == postId)
+        // AppState.activePost = post
         logger.log("correct id to like?", postId)
+        // logger.log("correct id to like?", post)
         let liker = AppState.account.id
         // maybe I need to be splicing...SINGULAR 'like'
-        const res = await api.post(`api/posts/${postId}/like`, liker)
-        logger.log("likeable?", res.data.liker)
+        const res = await api.post(`api/posts/${postId.id}/like`, liker)
+        logger.log("likeable?", res.data.likeIds)
     }
 
 }
