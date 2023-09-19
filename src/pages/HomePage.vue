@@ -11,7 +11,7 @@
     <button class="btn col-3 mt-3">Post!</button>
   </form> -->
   <div class="container-fluid ">
-    <PostForm class="m-2 rounded" />
+    <PostForm v-if="account" class="m-2 rounded" />
 
 
     <!-- move to Create Post -->
@@ -197,7 +197,8 @@ export default {
       pageNumber: computed(() => AppState.pageNumber),
       totalPages: computed(() => AppState.totalPages),
       activePost: computed(() => AppState.activePost),
-      sellers: computed(() => AppState.sellers)
+      sellers: computed(() => AppState.sellers),
+      account: computed(() => AppState.account.id),
     };
   },
   components: { SearchPage }
